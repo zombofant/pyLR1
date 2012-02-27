@@ -2366,11 +2366,14 @@ class Lexer(object):
     """ + lextablehelper + """
     table   = """ + lextablestr + """
 
-    def __init__(self, codefile):
-        code = open(codefile, 'r')
-        self.buffer = mmap.mmap(code.fileno(), 0, access=mmap.ACCESS_READ)
-        self.size = self.buffer.size()
-        code.close()
+    def __init__(self, filelike):
+        try:
+            self.buffer = mmap.mmap(code.fileno(), 0, access=mmap.ACCESS_READ)
+            self.size = self.buffer.size()
+            # FIXME: use proper exception qualifier
+        except:
+            self.buffer = filelike.read()
+            self.size = len(self.buffer)
         self.root = 0
         self.last_token_end = 0
         self.position = 0
