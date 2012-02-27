@@ -2148,20 +2148,21 @@ class Writer(object):
 
         return ded, indices
 
-    def __init__(self, parser_file, lines, trace, deduplicate, python3):
+    def __init__(self, parser_file, lines, trace, deduplicate, python3, version = None):
         self.parser_file = parser_file
         self.lines = lines
         self.trace = trace
         self.deduplicate = deduplicate
         self.python3 = python3
+        self.version = version
 
     def WriteHeader(self, header):
         self.parser_file.write("""# this file was generated automagically by pyLR1
 # do not edit, if you want to modify the parser, adapt the grammar file
-
+__version__ = {0!r}
 import mmap
 
-""")
+""".format(self.version))
 
         for headline in header:
             self.parser_file.write(headline + "\n")
